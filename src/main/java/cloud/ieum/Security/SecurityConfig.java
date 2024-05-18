@@ -36,7 +36,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {  //해당 URL은 필터 거치지 않겠다
         log.info("무시하기");
-        return (web -> web.ignoring().requestMatchers("/img/**", "/css/**", "/js/**"));
+        return (web -> web.ignoring().requestMatchers("/img/**", "/css/**", "/js/**", "/content", "/h2-console/**"));
         //return (web -> web.ignoring().antMatchers("/test"));
     }
     @Bean
