@@ -48,7 +48,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
     }
 
     public User saveSocialMember(String socialId, String name) {
-        User newMember = User.builder().socialId(socialId).name(name).role(Role.USER).build();
+        User newMember = User.builder().socialId(socialId).name(name).role(Role.GUEST).build();
         return userRepository.save(newMember);
     }
 }
