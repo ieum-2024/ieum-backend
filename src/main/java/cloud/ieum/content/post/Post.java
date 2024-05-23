@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,4 +27,10 @@ public class Post {
 
     @Column(name = "content")
     private String content;
+
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private Long createdBy;
 }
