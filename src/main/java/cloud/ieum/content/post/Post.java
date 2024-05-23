@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,9 +22,15 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private SubCategory subCategory;
 
-    @Column(name = "title")
+    @Column
     private String title;
 
-    @Column(name = "content")
+    @Column
     private String content;
+
+    @Column
+    private LocalDateTime createdAt;
+
+    @Column
+    private Long createdBy;
 }
