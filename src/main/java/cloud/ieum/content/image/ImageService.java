@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -33,5 +34,11 @@ public class ImageService {
             imageList.add(image);
         }
         imageJpaRepository.saveAll(imageList);
+    }
+
+    public List<String> getImgUrlsByPostId(Integer postId) {
+        return imageJpaRepository.findImagesByPostId(postId).stream()
+                .map(Image::getImageUrl)
+                .collect(Collectors.toList());
     }
 }

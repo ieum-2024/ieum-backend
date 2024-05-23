@@ -47,4 +47,17 @@ public class PostService {
             imageService.create(imgUrls, post);
         }
     }
+
+    public PostDetailDto getContentDetails(String userName, Integer postId) {
+        Post post = postJpaRepository.findById(postId).get();
+
+        return PostDetailDto.builder()
+                .menteeId(post.getCreatedBy())
+                .title(post.getTitle())
+                .pubDate(post.getCreatedAt())
+                .description(post.getContent())
+                .nickname(userName)
+                .images(imageService.getImgUrlsByPostId(postId))
+                .build();
+    }
 }
