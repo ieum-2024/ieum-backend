@@ -22,10 +22,10 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     private SubCategory subCategory;
 
-    @Column(name = "title")
+    @Column
     private String title;
 
-    @Column(name = "content")
+    @Column
     private String content;
 
     @Column

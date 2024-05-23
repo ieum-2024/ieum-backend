@@ -12,6 +12,6 @@ public class SubCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    @Column(name = "name")
+    @Column
     private String name;
 }

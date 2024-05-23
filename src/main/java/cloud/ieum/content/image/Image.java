@@ -20,6 +20,6 @@ public class Image {
     @ManyToOne
     private Post post;
 
-    @Column(name = "image_url")
+    @Column
     private String imageUrl;
 }
