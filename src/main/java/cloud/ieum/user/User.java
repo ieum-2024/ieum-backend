@@ -17,23 +17,34 @@ public class User {
     private Long id;
     @Column(name = "name")
     private String name;
+
+    @Column(name = "nickname")
+    private String nickname;
     //socialId로 유저 구분 가능
     @Column(name = "socialId")
     private String socialId;
     //최초 로그인인지 아닌지 알아보기 위한 용도
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    private String refreshToken;
     //멘토인지 멘티인지
     @Column(name = "type")
     private String type;
+    public void setType(String type){
+        this.type = type;
+    }
     public void authorizeUser(){
         this.role = Role.USER;
     }
 
-    public void updateRefreshToken(String updateRefreshToken){
-        this.refreshToken = updateRefreshToken;
+    public void setNickname(String nickname){
+        this.nickname = nickname;
     }
-
+    public static User makeUser(UserDTO dto){
+        User user = User.builder()
+                .role(Role.USER)
+                .type(dto.getType())
+                .nickname(dto.getNickname())
+                .build();
+        return user;
+    }
 }
