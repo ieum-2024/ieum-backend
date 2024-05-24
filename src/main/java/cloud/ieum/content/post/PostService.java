@@ -5,6 +5,7 @@ import cloud.ieum.content.subcategory.SubCategory;
 import cloud.ieum.content.subcategory.SubCategoryService;
 import cloud.ieum.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,9 @@ public class PostService {
     private final ImageService imageService;
     private final PostJpaRepository postJpaRepository;
     private final UserRepository userRepository;
+
+    private final int PAGE_SIZE = 5;
+    private final int PAGE_SIZE_PLUS_ONE = PAGE_SIZE + 1;
 
     @Transactional
     public void create(String userName, PostRequestDto postRequestDto, List<MultipartFile> images) throws Exception {
@@ -48,8 +52,9 @@ public class PostService {
         }
     }
 
-    public PostDetailDto getContentDetails(String userName, Integer postId) {
+    public PostDetailDto getPostDetails(Integer postId) {
         Post post = postJpaRepository.findById(postId).get();
+        String userName = userRepository.findById(post.getCreatedBy()).get().getName();
 
         return PostDetailDto.builder()
                 .menteeId(post.getCreatedBy())
@@ -60,4 +65,29 @@ public class PostService {
                 .images(imageService.getImgUrlsByPostId(postId))
                 .build();
     }
+
+    public PostsByInterestDto getPostsByInterest(Integer interestId, Integer cursor) {
+        Integer realCursor = cursor != null ? cursor : Integer.MAX_VALUE;
+        Pageable pageable = Pageable.ofSize(PAGE_SIZE_PLUS_ONE);
+        List<Post> postList = postJpaRepository.findAllByInterestUsingCursor(interestId, realCursor, pageable);
+
+        List<PostsByInterestDto.PostDto> postDtoList = new ArrayList<>();
+        for (Post post : postList) {
+            String userName = userRepository.findById(post.getCreatedBy()).get().getName();
+            String thumbnail = imageService.getFirstImagUrlByPostId(post.getId());
+            postDtoList.add(new PostsByInterestDto.PostDto(post.getId(), post.getTitle(), post.getCreatedAt(), post.getContent(), userName, thumbnail));
+        }
+        boolean hasNext = postDtoList.size() == PAGE_SIZE_PLUS_ONE ? true : false;
+        Integer nextCursor = 0;
+
+        if (hasNext) {
+            postDtoList.remove(PAGE_SIZE_PLUS_ONE - 1);
+            nextCursor = postList.get(PAGE_SIZE-1).getId();
+        }
+        PostsByInterestDto.CursorDto cursorDto = new PostsByInterestDto.CursorDto(nextCursor, hasNext);
+
+        return new PostsByInterestDto(postDtoList, cursorDto);
+    }
+
+
 }
