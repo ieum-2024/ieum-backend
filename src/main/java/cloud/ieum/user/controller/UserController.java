@@ -2,12 +2,14 @@ package cloud.ieum.user.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
 public class UserController {
-    //@GetMapping("/login")
+
     @GetMapping("/user/login/kakao")
     public String login(){
 
@@ -15,12 +17,13 @@ public class UserController {
         return "oauthLogin";
     }
 
-    //@GetMapping("/interest")
-    @GetMapping("/interest/all")
-    public String interest(){
 
-        log.info("interest");
-        return "interest";
+    @GetMapping("/user/info")
+    public String signup(@RequestParam String socialId, Model model){
+        model.addAttribute("socialId", socialId);
+        log.info("signup");
+
+        return "signup";
     }
 
 

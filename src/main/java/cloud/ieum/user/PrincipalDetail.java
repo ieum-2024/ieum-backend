@@ -81,4 +81,6 @@ public class PrincipalDetail implements OAuth2User, UserDetails {
     public User getUser() {
         return user;
     }
+
+    public Long getId() {return user.getId();}
 }
