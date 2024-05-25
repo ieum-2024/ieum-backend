@@ -2,13 +2,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: 'jdbc:mysql://localhost/jpa_1'
-
     username: root
     password:
-
+  sql:
+    init:
+      mode: always
 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
         ddl-auto: create        # DB 초기화 전략 (none, create, create-drop, update, validate)
 
@@ -18,10 +18,8 @@ spring:
         show-sql: true
 
     defer-datasource-initialization: true
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+    database: mysql
+
   security:
     oauth2:
       client:
@@ -41,6 +39,8 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  config:
+    import: classpath:/application-secret.yml
 
 
 

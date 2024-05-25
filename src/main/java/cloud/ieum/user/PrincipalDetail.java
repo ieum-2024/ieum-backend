@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrincipalDetail implements OAuth2User, UserDetails {
+public class PrincipalDetail implements UserDetails {
     private User user;
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -19,6 +19,11 @@ public class PrincipalDetail implements OAuth2User, UserDetails {
         this.authorities = authorities;
 
     }
+
+    public PrincipalDetail(User user) {
+        this.user = user;
+    }
+
     public PrincipalDetail(User user, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attributes){
         this.user = user;
         this.authorities = authorities;
@@ -27,16 +32,9 @@ public class PrincipalDetail implements OAuth2User, UserDetails {
 
     public Map<String, Object> getMemberInfo() {
         Map<String, Object> info = new HashMap<>();
-        info.put("name", user.getName());
-        //info.put("email", user.getEmail());
-        info.put("role", user.getRole());
         return info;
     }
 
-    @Override
-    public Map<String, Object> getAttributes() {
-        return null;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -71,11 +69,6 @@ public class PrincipalDetail implements OAuth2User, UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
-    }
-
-    @Override
-    public String getName() {
-        return null;
     }
 
     public User getUser() {

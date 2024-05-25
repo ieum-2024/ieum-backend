@@ -16,7 +16,6 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class JwtController {
 
-    //@RequestMapping("/user/reissue")
     @PostMapping("/user/reissue")
     public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken) {
         log.info("Refresh Token = {}", refreshToken);

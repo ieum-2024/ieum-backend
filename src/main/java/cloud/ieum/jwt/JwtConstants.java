@@ -8,4 +8,5 @@ public class JwtConstants {
     public static final String JWT_TYPE = "Bearer ";
     public static final String ACCESS = "AccessToken";
     public static final String REFRESH = "RefreshToken";
+    public static final String PROVIDER = "kakao";
 }

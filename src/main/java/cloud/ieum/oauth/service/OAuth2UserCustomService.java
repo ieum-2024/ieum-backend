@@ -1,4 +1,4 @@
-package cloud.ieum.oauth.service;
+/*package cloud.ieum.oauth.service;
 
 import cloud.ieum.oauth.KakaoUserInfo;
 import cloud.ieum.user.PrincipalDetail;
@@ -27,6 +27,7 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.info(userRequest.getAccessToken().toString());
         OAuth2User user = super.loadUser(userRequest);
         Map<String, Object> attributes = user.getAttributes();
 
@@ -52,3 +53,4 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
         return userRepository.save(newMember);
     }
 }
+*/
