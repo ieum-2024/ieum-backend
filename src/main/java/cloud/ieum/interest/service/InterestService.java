@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,11 @@ public class InterestService {
     public void removeInterest(Long interestId, Long userId){
         Interest interest = interestRepository.findByUserIdAndCategoryId(userId, interestId).orElseThrow(() -> new IllegalArgumentException("not found interest"));
         interestRepository.delete(interest);
+    }
 
+    public boolean isActiveInterest(Long interestId, Long userId){
+        Optional<Interest> interest = interestRepository.findByUserIdAndCategoryId(userId, interestId);
+        return interest.isPresent();
     }
 
     public List<Interest> findUserInterest(Long userId){

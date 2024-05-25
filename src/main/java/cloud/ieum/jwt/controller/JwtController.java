@@ -3,6 +3,7 @@ import cloud.ieum.jwt.JwtConstants;
 import cloud.ieum.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import java.util.NoSuchElementException;
 public class JwtController {
 
     //@RequestMapping("/user/info")
-    @RequestMapping("/user/reissue")
+    @PostMapping("/user/reissue")
     public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken) {
         log.info("Refresh Token = {}", refreshToken);
         if (authHeader == null) {

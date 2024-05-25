@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<h1>user/info</h1>
+<h1>회원가입</h1>
 
-<button type="button" class="btn btn-secondary mt-3" onclick="location.href='/interest/all'">멘토</button>
-<button type="button" class="btn btn-secondary mt-3" onclick="location.href='/interest/all'">멘티</button>
+<div class = "mb-2">
+    <form action="/user/info" method="POST">
+        <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
+        <div class="mb-3">
+            <label class="form-label text-white">nickname</label>
+            <input type="text" class="form-control" name="nickname">
+        </div>
+        <div class="mb-3">
+            <label class="form-label text-white">mentor/mentee</label>
+            <input type="text" class="form-control" name="type">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 
+</div>
 </body>
 </html>

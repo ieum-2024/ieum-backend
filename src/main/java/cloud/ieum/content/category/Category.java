@@ -1,7 +1,9 @@
 package cloud.ieum.content.category;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
+@Getter
 @Entity(name = "category_tb")
 public class Category {
     @Id
