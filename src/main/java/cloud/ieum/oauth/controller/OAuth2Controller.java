@@ -19,6 +19,7 @@ public class OAuth2Controller {
 
     private final UserService userService;
     private final OAuthService oAuthService;
+
     // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행
     @PostMapping("/user/info")
     public ResponseEntity<Object> OAuthSignUp(@ModelAttribute UserDTO userDTO, @AuthenticationPrincipal PrincipalDetail user) {
