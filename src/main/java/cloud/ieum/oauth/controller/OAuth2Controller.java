@@ -46,11 +46,13 @@ public class OAuth2Controller {
     public String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
 
 
+    //테스트용
     @RequestMapping("/login")
     public RedirectView kakaoLogin1(){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;
         return new RedirectView(uri);
     }
+    //테스트용
     @RequestMapping("/login/go")
     public RedirectView kakaologin(@RequestParam("scope") String scope){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;

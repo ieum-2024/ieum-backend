@@ -69,7 +69,7 @@ public class OAuthService {
         return new LoginDTO(accessToken, refreshToken, user.getId());*/
         String param = "grant_type=authorization_code&client_id="+REST_API_KEY+"&redirect_uri="+REDIRECT_URI+"&client_secret="+CLIENT_SECRET+"&code="+code;
         String rtn = httpCallService.Call("POST", TOKEN_URI, "", param);
-        //httpSession.setAttribute("token", Trans.token(rtn, new JsonParser()));
+
         String[] split = rtn.split(",");
         for (String s : split) {
             String[] split1 = s.split(":");
@@ -103,7 +103,7 @@ public class OAuthService {
         String uri = KAKAO_API_HOST + "/v2/user/me";
         return httpCallService.CallwithToken("GET", uri, httpSession.getAttribute("access_token").toString());
     }
-
+/*
     private MultiValueMap<String, String> tokenRequest(String code, ClientRegistration provider) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("code", code);
@@ -143,7 +143,7 @@ public class OAuthService {
                 .bodyValue(tokenRequest(code, provider))
                 .retrieve()
                 .bodyToMono(OAuth2AccessTokenResponse.class)
-                .block();*/
+                .block();
     }
 
     //kakao로부터 User Resource를 전달받음
@@ -171,7 +171,7 @@ public class OAuthService {
         User member = bySocialId.orElseGet(() -> saveSocialMember(socialId, name));
 
         return member;
-    }
+    }*/
     public User saveSocialMember(String socialId, String name) {
         User newMember = User.builder().socialId(socialId).name(name).role(Role.GUEST).build();
         return userRepository.save(newMember);
