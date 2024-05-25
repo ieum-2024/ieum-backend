@@ -7,9 +7,8 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
+import org.springframework.security.core.Authentication;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
@@ -20,7 +19,6 @@ import java.util.Set;
 
 public class JwtUtils {
     public static String secretKey = JwtConstants.key;
-
 
     // 헤더에 "Bearer XXX" 형식으로 담겨온 토큰을 추출한다
     public static String getTokenFromHeader(String header) {
@@ -46,6 +44,7 @@ public class JwtUtils {
     public static Authentication getAuthentication(String token) {
         Map<String, Object> claims = validateToken(token);
 
+        //String email = (String) claims.get("email");
         String name = (String) claims.get("name");
         String role = (String) claims.get("role");
         Role memberRole = Role.valueOf(role);

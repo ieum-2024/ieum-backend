@@ -7,10 +7,17 @@ import cloud.ieum.user.UserDTO;
 import cloud.ieum.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @RestController
 @Slf4j
@@ -39,13 +46,11 @@ public class OAuth2Controller {
     public String TOKEN_URI = "https://kauth.kakao.com/oauth/token";
 
 
-    //테스트용
     @RequestMapping("/login")
     public RedirectView kakaoLogin1(){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;
         return new RedirectView(uri);
     }
-    //테스트용
     @RequestMapping("/login/go")
     public RedirectView kakaologin(@RequestParam("scope") String scope){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;

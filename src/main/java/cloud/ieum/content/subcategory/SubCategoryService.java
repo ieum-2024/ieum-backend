@@ -1,8 +1,12 @@
 package cloud.ieum.content.subcategory;
 
+import cloud.ieum.content.category.Category;
+import cloud.ieum.interest.SubCategoryAcitveDTO;
+import cloud.ieum.interest.repository.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor

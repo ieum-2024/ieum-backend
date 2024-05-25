@@ -32,6 +32,8 @@ public class PrincipalDetail implements UserDetails {
 
     public Map<String, Object> getMemberInfo() {
         Map<String, Object> info = new HashMap<>();
+
+
         return info;
     }
 
