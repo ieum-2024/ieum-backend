@@ -1,5 +1,7 @@
 package cloud.ieum.content.post;
 
+import cloud.ieum.oauth.DTO.SessionUser;
+import cloud.ieum.oauth.annotation.LoginUser;
 import cloud.ieum.user.PrincipalDetail;
 import cloud.ieum.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,9 @@ public class PostRestController {
     @PostMapping("")
     public ResponseEntity<?> postContent(@RequestPart("data") PostRequestDto postRequestDto,
                                          @RequestPart(value = "file", required = false) List<MultipartFile> images,
-                                         @AuthenticationPrincipal PrincipalDetail user) throws Exception {
+                                         @LoginUser SessionUser user) throws Exception {
 
-        postService.create(user.getUsername(), postRequestDto, images);
+        postService.create(user.getName(), postRequestDto, images);
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
