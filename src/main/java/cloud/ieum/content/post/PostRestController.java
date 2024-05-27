@@ -24,9 +24,15 @@ public class PostRestController {
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
-    @GetMapping("/detail")
-    public ResponseEntity<?> getContentDetails(@AuthenticationPrincipal PrincipalDetail user, @RequestParam Integer content_id) throws Exception {
-        PostDetailDto responseDto = postService.getContentDetails(user.getUsername(), content_id);
+    @GetMapping("/detail/{content_id}")
+    public ResponseEntity<?> getContentDetails(@PathVariable Integer content_id) {
+        PostDetailDto responseDto = postService.getPostDetails(content_id);
+        return ResponseEntity.ok().body(ApiUtils.success(responseDto));
+    }
+
+    @GetMapping("/{interest_id}")
+    public ResponseEntity<?> getContentsByInterest(@PathVariable Integer interest_id, @RequestParam(required = false) Integer cursor) {
+        PostsByInterestDto responseDto = postService.getPostsByInterest(interest_id, cursor);
         return ResponseEntity.ok().body(ApiUtils.success(responseDto));
     }
 }

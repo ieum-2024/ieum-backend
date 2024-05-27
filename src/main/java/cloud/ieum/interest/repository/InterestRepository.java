@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InterestRepository extends JpaRepository<Interest, Long> {
-    List<Interest> findAllByUserId(Long userId);
+public interface InterestRepository extends JpaRepository<Interest, Integer> {
+    List<Interest> findAllByUserId(Integer userId);
 
-    Optional<Interest> findByUserIdAndCategoryId(Long userId, Long categoryId);
+    Optional<Interest> findByUserIdAndCategoryId(Integer userId, Integer categoryId);
 }

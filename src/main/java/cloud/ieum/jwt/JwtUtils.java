@@ -3,12 +3,21 @@ package cloud.ieum.jwt;
 import cloud.ieum.user.PrincipalDetail;
 import cloud.ieum.user.Role;
 import cloud.ieum.user.User;
+import cloud.ieum.user.service.PrincipalDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
@@ -17,15 +26,20 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+@Component
+@Slf4j
+@Configuration
+@RequiredArgsConstructor
 public class JwtUtils {
     public static String secretKey = JwtConstants.key;
+    PrincipalDetailsService principalDetailsService;
 
     // 헤더에 "Bearer XXX" 형식으로 담겨온 토큰을 추출한다
-    public static String getTokenFromHeader(String header) {
+    public String getTokenFromHeader(String header) {
         return header.split(" ")[1];
     }
 
-    public static String generateToken(Map<String, Object> valueMap, int validTime) {
+    public String generateToken(Map<String, Object> valueMap, int validTime) {
         SecretKey key = null;
         try {
             key = Keys.hmacShaKeyFor(JwtUtils.secretKey.getBytes(StandardCharsets.UTF_8));
@@ -41,22 +55,28 @@ public class JwtUtils {
                 .compact();
     }
 
-    public static Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) {
         Map<String, Object> claims = validateToken(token);
-
+        log.info(claims.toString());
         //String email = (String) claims.get("email");
         String name = (String) claims.get("name");
-        String role = (String) claims.get("role");
-        Role memberRole = Role.valueOf(role);
+        //String role = (String) claims.get("role");
+        //Role memberRole = Role.valueOf(role);
+        UserDetails userDetails = principalDetailsService.loadUserByUsername(name);
 
-        User member = User.builder().name(name).role(memberRole).build();
-        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
-        PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
+        //User member = User.builder().name(name).role(memberRole).build();
+        //Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
+       // PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
 
-        return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
+        //return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
+        log.info("get authentication");
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
     }
 
-    public static Map<String, Object> validateToken(String token) {
+
+
+    public Map<String, Object> validateToken(String token) {
         Map<String, Object> claim = null;
 
         SecretKey key = Keys.hmacShaKeyFor(JwtUtils.secretKey.getBytes(StandardCharsets.UTF_8));
@@ -69,7 +89,7 @@ public class JwtUtils {
         return claim;
     }
 
-    public static boolean isExpired(String token) {
+    public boolean isExpired(String token) {
         try {
             validateToken(token);
         } catch (Exception e) {
@@ -78,10 +98,11 @@ public class JwtUtils {
         return false;
     }
 
-    public static long tokenRemainTime(Integer expTime) {
+    public long tokenRemainTime(Integer expTime) {
         Date expDate = new Date((long) expTime * (1000));
         long remainMs = expDate.getTime() - System.currentTimeMillis();
         return remainMs / (1000 * 60);
     }
+
 
 }

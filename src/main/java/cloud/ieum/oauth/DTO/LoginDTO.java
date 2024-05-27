@@ -1,6 +1,7 @@
-package cloud.ieum.oauth;
+package cloud.ieum.oauth.DTO;
 
 
+import cloud.ieum.interest.Interest;
 import cloud.ieum.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class LoginDTO {
     private String accessToken;
     private String refreshToken;
-    private Long userId;
+    private Integer userId;
 
-    public LoginDTO(String accessToken, String refreshToken, Long userId) {
+    public LoginDTO(String accessToken, String refreshToken, Integer userId) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.userId = userId;

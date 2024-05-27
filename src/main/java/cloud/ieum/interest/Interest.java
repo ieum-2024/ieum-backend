@@ -13,10 +13,10 @@ import lombok.*;
 public class Interest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     @Column(name = "userId")
-    private Long userId;
+    private Integer userId;
     @Column(name = "categoryId")
-    private Long categoryId;
+    private Integer categoryId;
 
 }

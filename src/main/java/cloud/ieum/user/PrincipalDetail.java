@@ -1,15 +1,15 @@
 package cloud.ieum.user;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.lang.reflect.Member;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-public class PrincipalDetail implements UserDetails {
+public class PrincipalDetail implements UserDetails, OAuth2User {
     private User user;
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -19,6 +19,7 @@ public class PrincipalDetail implements UserDetails {
         this.authorities = authorities;
 
     }
+
 
     public PrincipalDetail(User user) {
         this.user = user;
@@ -30,13 +31,10 @@ public class PrincipalDetail implements UserDetails {
         this.attributes = attributes;
     }
 
-    public Map<String, Object> getMemberInfo() {
-        Map<String, Object> info = new HashMap<>();
-
-
-        return info;
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -77,5 +75,11 @@ public class PrincipalDetail implements UserDetails {
         return user;
     }
 
-    public Long getId() {return user.getId();}
+    public Integer getId() {return user.getId();}
+
+
+    @Override
+    public String getName() {
+        return getUsername();
+    }
 }

@@ -2,18 +2,11 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: 'jdbc:mysql://localhost/jpa_1'
-<<<<<<< HEAD
     username: root
     password: starki9337
   sql:
     init:
       mode: always
-=======
-
-    username: root
-    password:
-
->>>>>>> 52ce524 (.)
 
   jpa:
     hibernate:

@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-@RequiredArgsConstructor
+/*@RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
@@ -56,3 +56,4 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
     }
 }
+*/

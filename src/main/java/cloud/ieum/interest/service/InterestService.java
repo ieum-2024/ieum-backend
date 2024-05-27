@@ -16,21 +16,21 @@ import java.util.Optional;
 public class InterestService {
     private final InterestRepository interestRepository;
 
-    public void saveInterest(Long interestId, Long userId){
+    public void saveInterest(Integer interestId, Integer userId){
         interestRepository.save(Interest.builder().categoryId(interestId).userId(userId).build());
     }
 
-    public void removeInterest(Long interestId, Long userId){
+    public void removeInterest(Integer interestId, Integer userId){
         Interest interest = interestRepository.findByUserIdAndCategoryId(userId, interestId).orElseThrow(() -> new IllegalArgumentException("not found interest"));
         interestRepository.delete(interest);
     }
 
-    public boolean isActiveInterest(Long interestId, Long userId){
+    public boolean isActiveInterest(Integer interestId, Integer userId){
         Optional<Interest> interest = interestRepository.findByUserIdAndCategoryId(userId, interestId);
         return interest.isPresent();
     }
 
-    public List<Interest> findUserInterest(Long userId){
+    public List<Interest> findUserInterest(Integer userId){
         return interestRepository.findAllByUserId(userId);
     }
 }

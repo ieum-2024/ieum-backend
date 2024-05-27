@@ -17,12 +17,21 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Transactional
+    /*@Transactional
     public void updateUser(UserDTO userDTO, Long userId){
         log.info(String.valueOf(userId));
         log.info(userDTO.getNickname());
         log.info(userDTO.getType());
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("해당사용자가없습니다"));
+        user.authorizeUser();
+        user.setType(userDTO.getType());
+        user.setNickname(userDTO.getNickname());
+    }    */
+    @Transactional
+    public void updateUser(UserDTO userDTO, String socialId){
+        log.info(userDTO.getNickname());
+        log.info(userDTO.getType());
+        User user = userRepository.findBySocialId(socialId).orElseThrow(() -> new IllegalArgumentException("해당사용자가없습니다"));
         user.authorizeUser();
         user.setType(userDTO.getType());
         user.setNickname(userDTO.getNickname());

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Builder
 public class PostDetailDto {
-    private Long menteeId;
+    private Integer menteeId;
     private String title;
     private LocalDateTime pubDate;
     private String description;

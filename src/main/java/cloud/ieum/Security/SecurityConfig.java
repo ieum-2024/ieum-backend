@@ -1,8 +1,10 @@
 package cloud.ieum.Security;
 
+import cloud.ieum.jwt.JwtUtils;
 import cloud.ieum.jwt.filter.JwtAuthenticationProcessingFilter;
-import cloud.ieum.oauth.handler.OAuth2LoginSuccessHandler;
+//import cloud.ieum.oauth.handler.OAuth2LoginSuccessHandler;
 //import cloud.ieum.oauth.service.OAuth2UserCustomService;
+import cloud.ieum.oauth.annotation.LoginUserArgumentResolver;
 import cloud.ieum.oauth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +37,16 @@ import java.util.Set;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 @Slf4j
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
 
     private final OAuthService oAuthService;
-    //private final OAuth2UserCustomService oAuthService;
+
+    private final JwtUtils jwtUtils;
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginUserArgumentResolver());
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {  //해당 URL은 필터 거치지 않겠다
@@ -66,14 +76,15 @@ public class SecurityConfig {
     }*/
 
 
+
     @Bean
-    public JwtAuthenticationProcessingFilter JwtAuthenticationProcessingFilter() {
-        return new JwtAuthenticationProcessingFilter();
+    public JwtAuthenticationProcessingFilter JwtAuthenticationProcessingFilter(JwtUtils jwtUtils) {
+        return new JwtAuthenticationProcessingFilter(jwtUtils);
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
+        log.info("필터체인");
         http.cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));
 
         //http.csrf(AbstractHttpConfigurer::disable);
@@ -90,14 +101,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 
-        http.addFilterBefore(JwtAuthenticationProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
-
-
-        /*http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
-                httpSecurityOAuth2LoginConfigurer.loginPage("/login")
-                        .userInfoEndpoint(userInfoEndpointConfig ->
-                                userInfoEndpointConfig.userService(oAuthService))
-                        );*/
+        http.addFilterBefore(JwtAuthenticationProcessingFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

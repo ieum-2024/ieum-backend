@@ -8,6 +8,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,9 +23,10 @@ import java.util.Map;
 import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String[] whitelist = {"/signUp", "/login" , "/refresh", "/", "/index.html", "/oauthLogin"};
-
+    private static final String[] whitelist = {"/signUp", "/user/login/kakao", "/", "/login", "/refresh", "/index.html", "/oauthLogin"};
+    private final JwtUtils jwtUtils;
     private static void checkAuthorizationHeader(String header) {
         if(header == null) {
             throw new RuntimeException("토큰이 전달되지 않았습니다");
@@ -38,7 +40,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         if (requestURI.startsWith("/content")) return false; // "/content" 필터 걸리도록 (임시 테스트용)
 
-        return Arrays.stream(whitelist).anyMatch(path::startsWith);
+        return Arrays.stream(whitelist).anyMatch(requestURI::startsWith);
         //return PatternMatchUtils.simpleMatch(whitelist, requestURI);
     }
     @Override
@@ -46,11 +48,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader(JwtConstants.JWT_HEADER);
 
+        log.info("필터중...");
+        log.info(authHeader);
 
         try {
             checkAuthorizationHeader(authHeader);   // header 가 올바른 형식인지 체크
-            String token = JwtUtils.getTokenFromHeader(authHeader);
-            Authentication authentication = JwtUtils.getAuthentication(token);
+            String token = jwtUtils.getTokenFromHeader(authHeader);
+            Authentication authentication = jwtUtils.getAuthentication(token);
 
             log.info("authentication = {}", authentication);
 
@@ -71,6 +75,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             printWriter.println(json);
             printWriter.close();
         }
+        filterChain.doFilter(request, response);
     }
 
 }

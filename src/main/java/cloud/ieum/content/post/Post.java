@@ -32,5 +32,5 @@ public class Post {
     private LocalDateTime createdAt;
 
     @Column
-    private Long createdBy;
+    private Integer createdBy;
 }
