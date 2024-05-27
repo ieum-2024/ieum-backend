@@ -61,12 +61,16 @@ public class InterestController {
                 .body(responseValue);
     }
     @GetMapping("/interest/private")
-    public ResponseEntity<List<Interest>> interestPrivate(@LoginUser SessionUser user){
+    public ResponseEntity<List<SubCategoryDTO>> interestPrivate(@LoginUser SessionUser user){
 
         List<Interest> userInterest = interestService.findUserInterest(user.getId());
         log.info("interest private");
+        List<SubCategoryDTO> responseValue = new ArrayList<>();
+        for (Interest interest : userInterest) {
+            responseValue.add(new SubCategoryDTO(subCategoryService.getReferenceById(interest.getCategoryId())));
+        }
         return ResponseEntity.ok()
-                .body(userInterest);
+                .body(responseValue);
     }
     @GetMapping("/interest/create/{interest_id}")
     public String getEmpty(){

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class UserController {
 
-    //테스트
-    @GetMapping("/user/login/kakao")
+    /*테스트
+    @GetMapping("/login/kakao")
     public String login(){
 
         log.info("로그인");
@@ -32,7 +32,7 @@ public class UserController {
         log.info("signup");
 
         return "signup";
-    }
+    }*/
 
 
 

@@ -1,8 +1,12 @@
 package cloud.ieum.jwt.controller;
 import cloud.ieum.jwt.JwtConstants;
 import cloud.ieum.jwt.JwtUtils;
+import cloud.ieum.jwt.tokenDTO;
+import com.amazonaws.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +23,7 @@ public class JwtController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/user/reissue")
-    public Map<String, Object> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken) {
+    public ResponseEntity<tokenDTO> refresh(@RequestHeader("Authorization") String authHeader, String refreshToken) {
         log.info("Refresh Token = {}", refreshToken);
         if (authHeader == null) {
             throw new RuntimeException("Access Token 이 존재하지 않습니다");
@@ -31,7 +35,7 @@ public class JwtController {
 
         // Access Token 의 만료 여부 확인
         if (!jwtUtils.isExpired(accessToken)) {
-            return Map.of("Access Token", accessToken, "Refresh Token", refreshToken);
+            return ResponseEntity.ok(new tokenDTO(accessToken, refreshToken));
         }
 
         // refreshToken 검증 후 새로운 토큰 생성 후 전달
@@ -45,7 +49,8 @@ public class JwtController {
         if (expTime <= 60) {
             newRefreshToken = jwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
         }
+        tokenDTO tokenDTO = new tokenDTO(JwtConstants.JWT_TYPE + newAccessToken, newRefreshToken);
 
-        return Map.of("accessToken", newAccessToken, "refreshToken", newRefreshToken);
+        return ResponseEntity.ok(tokenDTO);
     }
 }

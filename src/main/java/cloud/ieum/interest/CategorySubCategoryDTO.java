@@ -13,12 +13,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class CategorySubCategoryDTO {
-    private String main_topic;
-    private List<SubCategoryAcitveDTO> sub_topic;
+    private String mainTopic;
+    private List<SubCategoryAcitveDTO> subTopic;
 
-    public CategorySubCategoryDTO(Category main_topic, List<SubCategoryAcitveDTO> sub_topic) {
-        this.main_topic = main_topic.getName();
-        this.sub_topic = sub_topic;
+    public CategorySubCategoryDTO(Category mainTopic, List<SubCategoryAcitveDTO> subTopic) {
+        this.mainTopic = mainTopic.getName();
+        this.subTopic = subTopic;
     }
 
 

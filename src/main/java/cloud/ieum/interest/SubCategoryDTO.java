@@ -17,5 +17,8 @@ public class SubCategoryDTO {
         this.name = subCategory.getName();
     }
 
-
+    public SubCategoryDTO(Integer interestId, String name) {
+        this.interestId = interestId;
+        this.name = name;
+    }
 }
