@@ -36,6 +36,15 @@ public class UserService {
         user.setType(userDTO.getType());
         user.setNickname(userDTO.getNickname());
     }
+    @Transactional
+    public void updateUser(UserDTO userDTO, Integer id){
+        log.info(userDTO.getNickname());
+        log.info(userDTO.getType());
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당사용자가없습니다"));
+        user.authorizeUser();
+        user.setType(userDTO.getType());
+        user.setNickname(userDTO.getNickname());
+    }
 
 
 }

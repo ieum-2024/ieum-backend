@@ -38,10 +38,9 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String requestURI = request.getRequestURI();
 
-        if (requestURI.startsWith("/content")) return false; // "/content" 필터 걸리도록 (임시 테스트용)
-
+        //if (requestURI.startsWith("/content")) return false; // "/content" 필터 걸리도록 (임시 테스트용)
         return Arrays.stream(whitelist).anyMatch(requestURI::startsWith);
-        //return PatternMatchUtils.simpleMatch(whitelist, requestURI);
+
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

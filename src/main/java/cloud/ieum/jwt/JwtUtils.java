@@ -60,7 +60,6 @@ public class JwtUtils {
         Map<String, Object> claims = validateToken(token);
         log.info("get authentication");
 
-
         String name = (String) claims.get("name");
         String role = (String) claims.get("role");
         Role memberRole = Role.valueOf(role);
