@@ -5,6 +5,7 @@ import cloud.ieum.oauth.annotation.LoginUser;
 import cloud.ieum.user.PrincipalDetail;
 import cloud.ieum.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,16 @@ import java.util.List;
 @RequestMapping("/content")
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class PostRestController {
     private final PostService postService;
     @PostMapping("")
     public ResponseEntity<?> postContent(@RequestPart("data") PostRequestDto postRequestDto,
                                          @RequestPart(value = "file", required = false) List<MultipartFile> images,
-                                         @LoginUser SessionUser user) throws Exception {
+                                         @AuthenticationPrincipal PrincipalDetail user) throws Exception {
 
         postService.create(user.getName(), postRequestDto, images);
+
         return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 

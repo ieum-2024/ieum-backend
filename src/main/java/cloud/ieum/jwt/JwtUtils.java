@@ -46,6 +46,7 @@ public class JwtUtils {
         } catch(Exception e){
             throw new RuntimeException(e.getMessage());
         }
+
         return Jwts.builder()
                 .setHeader(Map.of("typ","JWT"))
                 .setClaims(valueMap)
@@ -57,20 +58,20 @@ public class JwtUtils {
 
     public Authentication getAuthentication(String token) {
         Map<String, Object> claims = validateToken(token);
-        log.info(claims.toString());
-        //String email = (String) claims.get("email");
-        String name = (String) claims.get("name");
-        //String role = (String) claims.get("role");
-        //Role memberRole = Role.valueOf(role);
-        UserDetails userDetails = principalDetailsService.loadUserByUsername(name);
-
-        //User member = User.builder().name(name).role(memberRole).build();
-        //Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
-       // PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
-
-        //return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
         log.info("get authentication");
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+
+        String name = (String) claims.get("name");
+        String role = (String) claims.get("role");
+        Role memberRole = Role.valueOf(role);
+        //UserDetails userDetails = principalDetailsService.loadUserByUsername(name);
+
+        User member = User.builder().name(name).role(memberRole).build();
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
+        PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
+
+        return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
+        //return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
     }
 

@@ -47,14 +47,14 @@ public class OAuth2Controller {
         userService.updateUser(userDTO, user.getSocialId());
         return ResponseEntity.ok(null);
     }
-/*
+
     //테스트용
     @RequestMapping("/login")
     public RedirectView kakaoLogin1(){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;
         return new RedirectView(uri);
     }
-*/
+
     @RequestMapping(value = "/user/login/kakao")
     public ResponseEntity<?> kakaoInfo(String code){
         LoginDTO loginDTO = oAuthService.login(code);

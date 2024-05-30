@@ -44,7 +44,7 @@ public class InterestController {
     }
 
     @GetMapping("/interest/public")
-    public ResponseEntity<List<CategorySubCategoryDTO>> interestPublic(@LoginUser SessionUser user){
+    public ResponseEntity<List<CategorySubCategoryDTO>> interestPublic(@AuthenticationPrincipal PrincipalDetail user){
 
         List<Category> all = categoryJpaRepository.findAll();
         List<CategorySubCategoryDTO> responseValue = new ArrayList<>();
@@ -61,7 +61,7 @@ public class InterestController {
                 .body(responseValue);
     }
     @GetMapping("/interest/private")
-    public ResponseEntity<List<SubCategoryDTO>> interestPrivate(@LoginUser SessionUser user){
+    public ResponseEntity<List<SubCategoryDTO>> interestPrivate(@AuthenticationPrincipal PrincipalDetail user){
 
         List<Interest> userInterest = interestService.findUserInterest(user.getId());
         log.info("interest private");
@@ -77,14 +77,14 @@ public class InterestController {
         return "empty";
     }
     @PostMapping("/interest/create/{interest_id}")
-    public ResponseEntity<?> addInterest(@PathVariable Integer interest_id, @LoginUser SessionUser user){
+    public ResponseEntity<?> addInterest(@PathVariable Integer interest_id, @AuthenticationPrincipal PrincipalDetail user){
         interestService.saveInterest(interest_id, user.getId());
         log.info("interest create");
         return ResponseEntity.ok(null);
     }
 
     @PostMapping("/interest/delete/{interest_id}")
-    public ResponseEntity<?> removeInterest(@PathVariable Integer interest_id, @LoginUser SessionUser user){
+    public ResponseEntity<?> removeInterest(@PathVariable Integer interest_id, @AuthenticationPrincipal PrincipalDetail user){
         interestService.removeInterest(interest_id, user.getId());
         log.info("interest delete");
         return ResponseEntity.ok(null);

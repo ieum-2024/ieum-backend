@@ -69,6 +69,8 @@ public class OAuthService {
 
         log.info(tokenResponse.toString());
         User user = getUserProfile(tokenResponse.getAsString("access_token"));
+        tokenResponse.appendField("name", user.getName());
+        tokenResponse.appendField("role", user.getRole());
 
         return new LoginDTO(jwtUtils.generateToken(tokenResponse, JwtConstants.ACCESS_EXP_TIME), jwtUtils.generateToken(tokenResponse, JwtConstants.REFRESH_EXP_TIME), user.getId());
 
