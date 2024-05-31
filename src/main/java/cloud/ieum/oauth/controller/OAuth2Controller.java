@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -60,20 +61,22 @@ public class OAuth2Controller {
     }
 */
     @PostMapping(value = "/user/login/kakao")
-    public ResponseEntity<LoginDTO> kakao(@RequestPart(value = "code") String code){
+    //public ResponseEntity<LoginDTO> kakao(@RequestPart(value = "code") String code){
+    public ResponseEntity<LoginDTO> kakao(@RequestBody HashMap<String, String> map){
+        String code = map.get("code");
         LoginDTO loginDTO = oAuthService.login(code);
 
         return ResponseEntity.ok(loginDTO);
     }
 
-    /*
+/*
     //테스트용
     @GetMapping(value = "/user/login")
     public String kakao_(String code){
         return code;
-    }*/
+    }
 
-
+*/
 
 
 
