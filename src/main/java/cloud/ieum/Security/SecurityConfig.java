@@ -6,6 +6,8 @@ import cloud.ieum.jwt.filter.JwtAuthenticationProcessingFilter;
 //import cloud.ieum.oauth.service.OAuth2UserCustomService;
 import cloud.ieum.oauth.annotation.LoginUserArgumentResolver;
 import cloud.ieum.oauth.service.OAuthService;
+import cloud.ieum.user.repository.UserRepository;
+import cloud.ieum.user.service.PrincipalDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,7 @@ import java.util.Set;
 public class SecurityConfig implements WebMvcConfigurer {
 
     private final OAuthService oAuthService;
+    private final UserRepository userRepository;
 
     private final JwtUtils jwtUtils;
 
@@ -76,6 +79,10 @@ public class SecurityConfig implements WebMvcConfigurer {
     }*/
 
 
+    @Bean
+    public PrincipalDetailsService PrincipalDetailsService(){
+        return new PrincipalDetailsService(userRepository);
+    }
 
     @Bean
     public JwtAuthenticationProcessingFilter JwtAuthenticationProcessingFilter(JwtUtils jwtUtils) {

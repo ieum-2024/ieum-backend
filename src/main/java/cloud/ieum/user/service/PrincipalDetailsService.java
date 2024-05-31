@@ -22,7 +22,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info(username);
-        Optional<User> userEntity = userRepository.findBySocialId(username);
+        Optional<User> userEntity = userRepository.findByName(username);
         if(userEntity.isEmpty()) {
             return null;
         } else {

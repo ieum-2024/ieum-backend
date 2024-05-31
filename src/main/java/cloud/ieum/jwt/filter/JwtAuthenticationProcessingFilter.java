@@ -25,7 +25,7 @@ import static org.aspectj.weaver.tools.cache.SimpleCacheFactory.path;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String[] whitelist = {"/user/reissue", "/user/login/kakao", "/login", "/user/info", "/user"};
+    private static final String[] whitelist = {"/user/reissue", "/user/login/kakao", "/user/login", "/login/kakao", "/login", "/user"};
     private final JwtUtils jwtUtils;
     private static void checkAuthorizationHeader(String header) {
         if(header == null) {
@@ -53,6 +53,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         try {
             checkAuthorizationHeader(authHeader);   // header 가 올바른 형식인지 체크
             String token = jwtUtils.getTokenFromHeader(authHeader);
+            log.info("authentication = {}", token);
+
             Authentication authentication = jwtUtils.getAuthentication(token);
 
             log.info("authentication = {}", authentication);

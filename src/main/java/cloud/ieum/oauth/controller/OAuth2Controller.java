@@ -44,12 +44,14 @@ public class OAuth2Controller {
 
 
     // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행
-    @PostMapping("/user/info")
-    public ResponseEntity<Object> OAuthSignUp(@ModelAttribute UserDTO userDTO, @LoginUser SessionUser user) {
+    @PostMapping("/user/info/{id}")
+    public ResponseEntity<Object> OAuthSignUp(@RequestBody HashMap<String, String> map, @PathVariable Integer id) {
         //SessionUser user = (SessionUser) httpSession.getAttribute("loginUser");
         log.info("save user");
-        log.info(user.getSocialId());
-        userService.updateUser(userDTO, user.getSocialId());
+        String nickname = map.get("nickname");
+        String role = map.get("role");
+        UserDTO userDTO = new UserDTO(nickname, role);
+        userService.updateUser(userDTO, id);
         return ResponseEntity.ok(null);
     }
 
@@ -58,8 +60,8 @@ public class OAuth2Controller {
     public RedirectView kakaoLogin1(){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;
         return new RedirectView(uri);
-    }
-*/
+    }*/
+
     @PostMapping(value = "/user/login/kakao")
     //public ResponseEntity<LoginDTO> kakao(@RequestPart(value = "code") String code){
     public ResponseEntity<LoginDTO> kakao(@RequestBody HashMap<String, String> map){
@@ -74,9 +76,9 @@ public class OAuth2Controller {
     @GetMapping(value = "/user/login")
     public String kakao_(String code){
         return code;
-    }
+    }*/
 
-*/
+
 
 
 

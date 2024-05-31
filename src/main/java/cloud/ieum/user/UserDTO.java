@@ -12,4 +12,9 @@ public class UserDTO {
 
     private String nickname;
     private String type;
+
+    public UserDTO(String nickname, String type) {
+        this.nickname = nickname;
+        this.type = type;
+    }
 }
