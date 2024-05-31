@@ -32,7 +32,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class JwtUtils {
     public static String secretKey = JwtConstants.key;
-    PrincipalDetailsService principalDetailsService;
+    private final PrincipalDetailsService principalDetailsService;
 
     // 헤더에 "Bearer XXX" 형식으로 담겨온 토큰을 추출한다
     public String getTokenFromHeader(String header) {
@@ -63,14 +63,14 @@ public class JwtUtils {
         String name = (String) claims.get("name");
         String role = (String) claims.get("role");
         Role memberRole = Role.valueOf(role);
-        //UserDetails userDetails = principalDetailsService.loadUserByUsername(name);
+        UserDetails userDetails = principalDetailsService.loadUserByUsername(name);
 
         User member = User.builder().name(name).role(memberRole).build();
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority(member.getRole().getValue()));
         PrincipalDetail principalDetail = new PrincipalDetail(member, authorities);
 
-        return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
-        //return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        //return new UsernamePasswordAuthenticationToken(principalDetail, "", authorities);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 
     }
 

@@ -80,6 +80,7 @@ public class InterestController {
     public ResponseEntity<?> addInterest(@PathVariable Integer interest_id, @AuthenticationPrincipal PrincipalDetail user){
         interestService.saveInterest(interest_id, user.getId());
         log.info("interest create");
+        log.info(user.getId().toString());
         return ResponseEntity.ok(null);
     }
 
