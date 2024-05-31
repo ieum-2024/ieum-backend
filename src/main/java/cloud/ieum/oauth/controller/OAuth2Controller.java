@@ -8,6 +8,7 @@ import cloud.ieum.oauth.service.OAuthService;
 import cloud.ieum.user.PrincipalDetail;
 import cloud.ieum.user.UserDTO;
 import cloud.ieum.user.service.UserService;
+import cloud.ieum.utils.ApiUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,15 +45,16 @@ public class OAuth2Controller {
 
 
     // OAuth2 로그인 시 최초 로그인인 경우 회원가입 진행
-    @PostMapping("/user/info/{id}")
-    public ResponseEntity<Object> OAuthSignUp(@RequestBody HashMap<String, String> map, @PathVariable Integer id) {
+    @PostMapping("/user/info")
+    public ResponseEntity<Object> OAuthSignUp(@RequestBody HashMap<String, String> map) {
         //SessionUser user = (SessionUser) httpSession.getAttribute("loginUser");
         log.info("save user");
+        Integer id = Integer.parseInt(map.get("id"));
         String nickname = map.get("nickname");
         String role = map.get("role");
         UserDTO userDTO = new UserDTO(nickname, role);
         userService.updateUser(userDTO, id);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
     /*//테스트용

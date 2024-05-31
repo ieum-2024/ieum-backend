@@ -25,7 +25,7 @@ public class InterestService {
         interestRepository.delete(interest);
     }
 
-    public boolean isActiveInterest(Integer interestId, Integer userId){
+    public Boolean isActiveInterest(Integer interestId, Integer userId){
         Optional<Interest> interest = interestRepository.findByUserIdAndCategoryId(userId, interestId);
         return interest.isPresent();
     }

@@ -11,9 +11,9 @@ import lombok.Setter;
 public class SubCategoryAcitveDTO {
     private Integer interestId;
     private String name;
-    private boolean isActive;
+    private Boolean isActive;
 
-    public SubCategoryAcitveDTO(SubCategory subCategory, boolean isActive) {
+    public SubCategoryAcitveDTO(SubCategory subCategory, Boolean isActive) {
         this.interestId = subCategory.getId();
         this.name = subCategory.getName();
         this.isActive = isActive;

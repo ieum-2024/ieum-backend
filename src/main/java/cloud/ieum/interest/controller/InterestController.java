@@ -12,6 +12,7 @@ import cloud.ieum.interest.service.InterestService;
 import cloud.ieum.oauth.DTO.SessionUser;
 import cloud.ieum.oauth.annotation.LoginUser;
 import cloud.ieum.user.PrincipalDetail;
+import cloud.ieum.utils.ApiUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,17 +35,17 @@ public class InterestController {
     private final CategoryJpaRepository categoryJpaRepository;
 
     @GetMapping("/interest/all")
-    public ResponseEntity<List<SubCategoryDTO>> interestAll(){
+    public ResponseEntity<?> interestAll(){
         List<SubCategory> allSubCategory = subCategoryService.getAllSubCategory();
         List<SubCategoryDTO> responseValue = new ArrayList<>();
         for (SubCategory subCategory : allSubCategory) {
             responseValue.add(new SubCategoryDTO(subCategory));
         }
-        return ResponseEntity.ok().body(responseValue);
+        return ResponseEntity.ok().body(ApiUtils.success(responseValue));
     }
 
     @GetMapping("/interest/public")
-    public ResponseEntity<List<CategorySubCategoryDTO>> interestPublic(@AuthenticationPrincipal PrincipalDetail user){
+    public ResponseEntity<?> interestPublic(@AuthenticationPrincipal PrincipalDetail user){
 
         List<Category> all = categoryJpaRepository.findAll();
         List<CategorySubCategoryDTO> responseValue = new ArrayList<>();
@@ -57,11 +58,10 @@ public class InterestController {
             }
             responseValue.add(new CategorySubCategoryDTO(category, subCategoryAcitveDTOList));
         }
-        return ResponseEntity.ok()
-                .body(responseValue);
+        return ResponseEntity.ok().body(ApiUtils.success(responseValue));
     }
     @GetMapping("/interest/private")
-    public ResponseEntity<List<SubCategoryDTO>> interestPrivate(@AuthenticationPrincipal PrincipalDetail user){
+    public ResponseEntity<?> interestPrivate(@AuthenticationPrincipal PrincipalDetail user){
 
         List<Interest> userInterest = interestService.findUserInterest(user.getId());
         log.info("interest private");
@@ -69,26 +69,26 @@ public class InterestController {
         for (Interest interest : userInterest) {
             responseValue.add(new SubCategoryDTO(subCategoryService.getReferenceById(interest.getCategoryId())));
         }
-        return ResponseEntity.ok()
-                .body(responseValue);
+        return ResponseEntity.ok().body(ApiUtils.success(responseValue));
     }
     @GetMapping("/interest/create/{interest_id}")
     public String getEmpty(){
         return "empty";
     }
+
     @PostMapping("/interest/create/{interest_id}")
     public ResponseEntity<?> addInterest(@PathVariable Integer interest_id, @AuthenticationPrincipal PrincipalDetail user){
         interestService.saveInterest(interest_id, user.getId());
         log.info("interest create");
         log.info(user.getId().toString());
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
     @PostMapping("/interest/delete/{interest_id}")
     public ResponseEntity<?> removeInterest(@PathVariable Integer interest_id, @AuthenticationPrincipal PrincipalDetail user){
         interestService.removeInterest(interest_id, user.getId());
         log.info("interest delete");
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok().body(ApiUtils.success(null));
     }
 
 }
