@@ -1,7 +1,6 @@
 package cloud.ieum.content.subcategory;
 
 import cloud.ieum.content.category.Category;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -9,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class SubCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
