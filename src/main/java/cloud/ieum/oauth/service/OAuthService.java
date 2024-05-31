@@ -22,6 +22,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class OAuthService {
     public LoginDTO login(String code) { //로그인 로직 모두 처리하는 메서드
         log.info(code);
         //kakao로부터 access, refresh토큰 받아옴
-        WebClient webClient = WebClient.builder()
+        /*WebClient webClient = WebClient.builder()
                 .baseUrl(TOKEN_URI)
                 .build();
 
@@ -66,11 +67,13 @@ public class OAuthService {
                     header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
                 })
                 .retrieve().bodyToMono(JSONObject.class).block();
+*/
 
-        log.info(tokenResponse.toString());
-        User user = getUserProfile(tokenResponse.getAsString("access_token"));
-        tokenResponse.appendField("name", user.getName());
-        tokenResponse.appendField("role", user.getRole());
+        User user = getUserProfile(code);
+        HashMap<String, Object> tokenResponse = new HashMap<>();
+        tokenResponse.put("name", user.getName());
+        tokenResponse.put("role", user.getRole());
+        tokenResponse.put("access_token", code);
 
         return new LoginDTO(jwtUtils.generateToken(tokenResponse, JwtConstants.ACCESS_EXP_TIME), jwtUtils.generateToken(tokenResponse, JwtConstants.REFRESH_EXP_TIME), user.getId());
 
