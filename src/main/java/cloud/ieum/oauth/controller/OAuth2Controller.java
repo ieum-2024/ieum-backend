@@ -12,10 +12,14 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -48,19 +52,28 @@ public class OAuth2Controller {
         return ResponseEntity.ok(null);
     }
 
-    //테스트용
-    /*@RequestMapping("/login")
+    /*//테스트용
+    @RequestMapping("/login")
     public RedirectView kakaoLogin1(){
         String uri = AUTHORIZE_URI+"?redirect_uri="+REDIRECT_URI+"&response_type=code&client_id="+REST_API_KEY;
         return new RedirectView(uri);
-    }*/
-
-    @RequestMapping(value = "/user/login/kakao")
-    public ResponseEntity<?> kakaoInfo(String code){
+    }
+*/
+    @PostMapping(value = "/user/login/kakao")
+    public ResponseEntity<LoginDTO> kakao(@RequestPart(value = "code") String code){
         LoginDTO loginDTO = oAuthService.login(code);
 
         return ResponseEntity.ok(loginDTO);
     }
+
+    /*
+    //테스트용
+    @GetMapping(value = "/user/login")
+    public String kakao_(String code){
+        return code;
+    }*/
+
+
 
 
 
