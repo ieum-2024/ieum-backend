@@ -54,7 +54,7 @@ public class PostService {
 
     public PostDetailDto getPostDetails(Integer postId) {
         Post post = postJpaRepository.findById(postId).get();
-        String userName = userRepository.findById(post.getCreatedBy()).get().getName();
+        String userName = userRepository.findById(post.getCreatedBy()).get().getNickname();
 
         return PostDetailDto.builder()
                 .menteeId(post.getCreatedBy())
