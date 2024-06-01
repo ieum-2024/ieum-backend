@@ -73,7 +73,7 @@ public class PostService {
 
         List<PostsByInterestDto.PostDto> postDtoList = new ArrayList<>();
         for (Post post : postList) {
-            String userName = userRepository.findById(post.getCreatedBy()).get().getName();
+            String userName = userRepository.findById(post.getCreatedBy()).get().getNickname();
             String thumbnail = imageService.getFirstImagUrlByPostId(post.getId());
             postDtoList.add(new PostsByInterestDto.PostDto(post.getId(), post.getTitle(), post.getCreatedAt(), post.getContent(), userName, thumbnail));
         }

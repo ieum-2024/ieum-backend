@@ -5,14 +5,14 @@ INSERT INTO category_tb (name) VALUES ('운동');
 INSERT INTO category_tb (name) VALUES ('게임');
 INSERT INTO category_tb (name) VALUES ('음악');
 
-INSERT INTO subcategory_tb (id, category_id,name) VALUES (301, 1,'대학진학'), (302, 1,'창업'), (303, 1,'자격증취득'), (304, 1,'직업훈련');
+INSERT INTO subcategory_tb (id, category_id,name) VALUES (300, 1,'취업'), (301, 1,'대학진학'), (302, 1,'창업'), (303, 1,'자격증취득'), (304, 1,'직업훈련');
 INSERT INTO subcategory_tb (id, category_id,name) VALUES (305, 2,'전세자금 대출'), (306, 2,'정부지원정책'), (307, 2,'전세/임대 전의 유의사항'), (308, 2,'전세사기 위험');
 INSERT INTO subcategory_tb (id, category_id,name) VALUES (309, 3,'요리'), (310, 3,'세탁'), (311, 3,'청소'), (312, 3,'비용절감');
 INSERT INTO subcategory_tb (id, category_id,name) VALUES (313, 4,'야구'), (314, 4,'농구'), (315, 4,'축구'), (316, 4,'수영'), (317, 4,'등산');
 INSERT INTO subcategory_tb (id, category_id,name) VALUES (318, 5,'컴퓨터게임'), (319, 5,'보드게임'), (320, 5,'카드게임'), (321, 5,'모바일게임');
 INSERT INTO subcategory_tb (id, category_id,name) VALUES (322, 6,'클래식'), (323, 6,'전자음악'), (324, 6,'힙합'), (325, 6,'재즈');
 
-INSERT INTO user_tb (user_id, name, social_id, role) VALUES (1, 'user1', 1234567890, 'GUEST');
+INSERT INTO user_tb (user_id, name, nickname, social_id, role) VALUES (1, 'user1', 'nick1', 1234567890, 'GUEST');
 
 INSERT INTO post_tb (sub_category_id, title, content, created_at, created_by) VALUES
 (301, 'title1', 'content1', NOW(), 1),
