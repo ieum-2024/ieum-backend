@@ -98,8 +98,8 @@ public class JwtUtils {
         return false;
     }
 
-    public long tokenRemainTime(Integer expTime) {
-        Date expDate = new Date((long) expTime * (1000));
+    public long tokenRemainTime(Long expTime) {
+        Date expDate = new Date(expTime * (1000));
         long remainMs = expDate.getTime() - System.currentTimeMillis();
         return remainMs / (1000 * 60);
     }

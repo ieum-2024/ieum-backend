@@ -47,7 +47,7 @@ public class JwtController {
         String newAccessToken = jwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 
         String newRefreshToken = refreshToken;
-        long expTime = jwtUtils.tokenRemainTime((Integer) claims.get("exp"));   // Refresh Token 남은 만료 시간
+        long expTime = jwtUtils.tokenRemainTime((Long) claims.get("exp"));   // Refresh Token 남은 만료 시간
         log.info("Refresh Token Remain Expire Time = {}", expTime);
         // Refresh Token 의 만료 시간이 한 시간도 남지 않은 경우
         if (expTime <= 60) {
