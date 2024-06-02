@@ -65,7 +65,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);    // 다음 필터로 이동
         } catch (Exception e) {
-            ApiUtils.ApiResult<?> exception = ApiUtils.error("에러", HttpStatus.UNAUTHORIZED);
+            ApiUtils.ApiResult<?> exception = ApiUtils.error("리프레시 에러가 발생했습니다.", HttpStatus.UNAUTHORIZED);
             response.setContentType("application/json; charset=UTF-8");
             response.setStatus(exception.getError().getStatus());
             response.getOutputStream().write(om.writeValueAsBytes(exception));
